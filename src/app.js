@@ -11,9 +11,4 @@ app.get("/musicians", async (request, response) => {
     response.json(data)
 })
 
-
-
-
-
-
 module.exports = app;

@@ -15,6 +15,7 @@ describe('./musicians endpoint', () => {
     // Write your tests here
     test("Testing musicians endpoint GET request successful", async () => {
         const response = await request(app).get("/musicians")
+        console.log(response)
         expect(response.statusCode).toBe(200);
     })
     // test("Testing ")
