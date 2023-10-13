@@ -18,5 +18,4 @@ describe('./musicians endpoint', () => {
         console.log(response)
         expect(response.statusCode).toBe(200);
     })
-    // test("Testing ")
 })
