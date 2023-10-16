@@ -23,4 +23,10 @@ describe('./musicians endpoint', () => {
         const responseData = JSON.parse(response.text)
         expect(responseData[0].id).toBe(1)
     } )
+
+    test("get 1 musician endpoint", async () =>{
+        const musician = await request(app).get("/musicians/1")
+        console.log(musician)
+        expect(musician.body.id).toBe(1)
+    })
 })
