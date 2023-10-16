@@ -29,4 +29,13 @@ describe('./musicians endpoint', () => {
         console.log(musician)
         expect(musician.body.id).toBe(1)
     })
+
+    test("Creating a new musician", async () => {
+        const musician = await request(app).post("/musicians").send({
+            name: "Tobi Lou",
+            instrument: "Guitar"
+        })
+        console.log(musician)
+        expect(musician.body.name).toBe("Tobi Lou")
+    })
 })
