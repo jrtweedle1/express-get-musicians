@@ -35,7 +35,16 @@ describe('./musicians endpoint', () => {
             name: "Tobi Lou",
             instrument: "Guitar"
         })
-        console.log(musician)
+        // console.log(musician)
         expect(musician.body.name).toBe("Tobi Lou")
+    })
+
+    test("Updating a new musician", async () => {
+        const musician = await request(app).put("/musicians/1").send({
+            name: "MC Hammer"
+        })
+        // console.log(musician.body)
+        const musicianName = await Musician.findByPk(1)
+        expect(musicianName.name).toBe("MC Hammer")
     })
 })
