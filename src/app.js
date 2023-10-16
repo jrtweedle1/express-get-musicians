@@ -48,6 +48,14 @@ app.post("/musicians", async (req, res) => {
     res.json(musician)
 })
 
+// Updating a musician
+app.put("/musicians/:id", async (req, res) => {
+    const musician = await Musician.update(req.body, {
+        where: { id: req.params.id }
+    })
+    res.json(musician)
+})
+
 // Getting all bands
 app.get("/bands", async (request, response) => {
     const data = await Band.findAll();
