@@ -56,6 +56,13 @@ app.put("/musicians/:id", async (req, res) => {
     res.json(musician)
 })
 
+//delete a musician
+app.delete('/musicians/:id', async(req, res) => {
+    const musician = await Musician.destroy({where: {id: req.params.id}});
+    res.json(musician)
+})
+
+
 // Getting all bands
 app.get("/bands", async (request, response) => {
     const data = await Band.findAll();

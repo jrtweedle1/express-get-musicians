@@ -47,4 +47,9 @@ describe('./musicians endpoint', () => {
         const musicianName = await Musician.findByPk(1)
         expect(musicianName.name).toBe("MC Hammer")
     })
+    test('deleting a musician', async() => {
+        await request(app).delete("/musicians/3")
+        const deleted = await Musician.findByPk(3);
+        expect(deleted).toBe(null)
+    })
 })
