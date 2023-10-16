@@ -11,22 +11,31 @@ app.get("/musicians", async (request, response) => {
     response.json(data)
 })
 
-app.get("/musicians/1", async (request, response) => {
-    const data = await Musician.findByPk(1);
-    // console.log(data)
-    response.json(data)
-})
+// app.get("/musicians/1", async (request, response) => {
+//     const data = await Musician.findByPk(1);
+//     // console.log(data)
+//     response.json(data)
+// })
 
-app.get("/musicians/2", async (request, response) => {
-    const data = await Musician.findByPk(2);
-    // console.log(data)
-    response.json(data)
-})
+// app.get("/musicians/2", async (request, response) => {
+//     const data = await Musician.findByPk(2);
+//     // console.log(data)
+//     response.json(data)
+// })
 
-app.get("/musicians/3", async (request, response) => {
-    const data = await Musician.findByPk(3);
-    // console.log(data)
-    response.json(data)
+// app.get("/musicians/3", async (request, response) => {
+//     const data = await Musician.findByPk(3);
+//     // console.log(data)
+//     response.json(data)
+// })
+
+
+
+app.get("/musicians/:id", async (req, res) => {
+    const id = req.params.id
+    const musician = await Musician.findByPk(id)
+
+    res.json(musician)
 })
 
 app.get("/bands", async (request, response) => {
