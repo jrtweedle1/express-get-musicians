@@ -6,7 +6,7 @@ execSync('npm run seed');
 // Used to access response to 
 const request = require("supertest")
 const { db } = require('./db/connection');
-const { Musician } = require('./models/index')
+const { Musician, Band } = require('./models/index')
 const app = require('./src/app');
 const seedMusician = require("./seedData");
 
@@ -47,9 +47,23 @@ describe('./musicians endpoint', () => {
         const musicianName = await Musician.findByPk(1)
         expect(musicianName.name).toBe("MC Hammer")
     })
+
     test('deleting a musician', async() => {
         await request(app).delete("/musicians/3")
         const deleted = await Musician.findByPk(3);
         expect(deleted).toBe(null)
+    })
+
+    test('Getting all bands including musicians', async() => {
+        const response = await request(app).get("/bands")
+        const responseData = response.body
+        console.log(responseData)
+        expect(responseData[0].id).toBe(1)
+    })
+
+    test('Getting one band including musicians', async() => {
+        const response = await request(app).get("/bands/1")
+        const responseData = response.body
+        expect(responseData.id).toBe(1)
     })
 })
