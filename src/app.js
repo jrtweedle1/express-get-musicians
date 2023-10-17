@@ -2,18 +2,25 @@ const express = require("express");
 const app = express();
 const { Musician, Band } = require("../models/index")
 const { db } = require("../db/connection")
+const musicianRouter = require("../routes/musicians")
 
 const port = 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true }));
+
+app.use("/musicians", musicianRouter)
+
+
+
+
 
 // Create a GET /musicians route to return all musicians 
-app.get("/musicians", async (request, response) => {
-    const data = await Musician.findAll();
-    response.json(data)
-})
+// app.get("/musicians", async (request, response) => {
+//     const data = await Musician.findAll();
+//     response.json(data)
+// })
 
 // app.get("/musicians/1", async (request, response) => {
 //     const data = await Musician.findByPk(1);
@@ -35,32 +42,32 @@ app.get("/musicians", async (request, response) => {
 
 
 // Getting a specific musician
-app.get("/musicians/:id", async (req, res) => {
-    const id = req.params.id
-    const musician = await Musician.findByPk(id)
+// app.get("/musicians/:id", async (req, res) => {
+//     const id = req.params.id
+//     const musician = await Musician.findByPk(id)
 
-    res.json(musician)
-})
+//     res.json(musician)
+// })
 
-// Adding a musician
-app.post("/musicians", async (req, res) => {
-    const musician = await Musician.create(req.body)
-    res.json(musician)
-})
+// // Adding a musician
+// app.post("/musicians", async (req, res) => {
+//     const musician = await Musician.create(req.body)
+//     res.json(musician)
+// })
 
-// Updating a musician
-app.put("/musicians/:id", async (req, res) => {
-    const musician = await Musician.update(req.body, {
-        where: { id: req.params.id }
-    })
-    res.json(musician)
-})
+// // Updating a musician
+// app.put("/musicians/:id", async (req, res) => {
+//     const musician = await Musician.update(req.body, {
+//         where: { id: req.params.id }
+//     })
+//     res.json(musician)
+// })
 
-//delete a musician
-app.delete('/musicians/:id', async(req, res) => {
-    const musician = await Musician.destroy({where: {id: req.params.id}});
-    res.json(musician)
-})
+// //delete a musician
+// app.delete('/musicians/:id', async(req, res) => {
+//     const musician = await Musician.destroy({where: {id: req.params.id}});
+//     res.json(musician)
+// })
 
 
 // Getting all bands
