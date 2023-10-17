@@ -3,6 +3,7 @@ const app = express();
 const { Musician, Band } = require("../models/index")
 const { db } = require("../db/connection")
 const musicianRouter = require("../routes/musicians")
+const bandRouter = require('../routes/band')
 
 const port = 3000;
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true }));
 
 app.use("/musicians", musicianRouter)
+app.use("/bands", bandRouter)
 
 
 
@@ -71,10 +73,10 @@ app.use("/musicians", musicianRouter)
 
 
 // Getting all bands
-app.get("/bands", async (request, response) => {
-    const data = await Band.findAll();
-    console.log(data)
-    response.json(data)
-})
+// app.get("/bands", async (request, response) => {
+//     const data = await Band.findAll();
+//     console.log(data)
+//     response.json(data)
+// })
 
 module.exports = app;
