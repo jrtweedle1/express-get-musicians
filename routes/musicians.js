@@ -19,8 +19,8 @@ router.get("/:id", async (req, res) => {
 
 // Adding a musician
 router.post("/", [
-    check("name").not().isEmpty().trim(),
-    check("instrument").not().isEmpty().trim()
+    check("name").not().isEmpty().trim().isLength({ min: 2, max: 20}),
+    check("instrument").not().isEmpty().trim().isLength({ min: 2, max: 20})
     ], async (req, res) => {
     
         const errors = validationResult(req)
@@ -38,11 +38,22 @@ router.post("/", [
 })
 
 // Updating a specific musician
-router.put("/:id", async (req, res) => {
-    const musician = await Musician.update(req.body, {
-        where: { id: req.params.id }
-    })
-    res.json(musician)
+router.put("/:id",[
+    check("name").not().isEmpty().trim(),
+    check("name").isLength({ min: 2, max: 20}),
+    check("instrument").not().isEmpty().trim(),
+    check("instrument").isLength({ min: 2, max: 20})
+    ], async (req, res) => {
+    
+    const errors = validationResult(req)
+    if(!errors.isEmpty()) {
+        res.json({error: errors.array()})
+    } else {
+        const musician = await Musician.update(req.body, {
+            where: { id: req.params.id }
+        })
+        res.json(musician)
+    }
 })
 
 // Delete a musician
