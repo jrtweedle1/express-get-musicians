@@ -26,7 +26,6 @@ describe('./musicians endpoint', () => {
 
     test("get 1 musician endpoint", async () =>{
         const musician = await request(app).get("/musicians/1")
-        console.log(musician)
         expect(musician.body.id).toBe(1)
     })
 
@@ -35,15 +34,14 @@ describe('./musicians endpoint', () => {
             name: "Tobi Lou",
             instrument: "Guitar"
         })
-        // console.log(musician)
-        expect(musician.body.name).toBe("Tobi Lou")
+
+        expect(musician.body[musician.body.length -1].name).toBe("Tobi Lou")
     })
 
     test("Updating a new musician", async () => {
         const musician = await request(app).put("/musicians/1").send({
             name: "MC Hammer"
         })
-        // console.log(musician.body)
         const musicianName = await Musician.findByPk(1)
         expect(musicianName.name).toBe("MC Hammer")
     })
@@ -57,8 +55,39 @@ describe('./musicians endpoint', () => {
     test('Getting all bands including musicians', async() => {
         const response = await request(app).get("/bands")
         const responseData = response.body
-        console.log(responseData)
         expect(responseData[0].id).toBe(1)
+    })
+
+    test("Errors array is returned when name or instrument is empty", async () =>{
+        const response1 = await request(app).post("/musicians").send({
+            name: "",
+            instrument: "Harp"
+        })
+
+        const response2 = await request(app).post("/musicians").send({
+            name: "Mark",
+            instrument: ""
+        })
+
+        expect(response1.body.error).toEqual([
+            {
+              type: 'field',
+              value: '',
+              msg: 'Invalid value',
+              path: 'name',
+              location: 'body'
+            }
+          ])
+
+          expect(response2.body.error).toEqual([
+            {
+              type: 'field',
+              value: '',
+              msg: 'Invalid value',
+              path: 'instrument',
+              location: 'body'
+            }
+          ])
     })
 
     test('Getting one band including musicians', async() => {
