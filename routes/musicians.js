@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Musician = require("../models/Musician")
+const { check, validationResult } = require("express-validator")
 
 
 // Getting all musicians
@@ -13,14 +14,21 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (req, res) => {
     const id = req.params.id
     const musician = await Musician.findByPk(id)
-
     res.json(musician)
 })
 
 // Adding a musician
-router.post("/", async (req, res) => {
+router.post("/", [check("name").not().isEmpty().trim(),
+check("instrument").not().isEmpty().trim()], async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        res.json({ error: errors.array() })
+    } 
+    else {
     const musician = await Musician.create(req.body)
-    res.json(musician)
+    const musicianData = await Musician.findAll();
+    res.json(musicianData)
+    }
 })
 
 // Updating a specific musician
