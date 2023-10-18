@@ -25,9 +25,12 @@ check("instrument").not().isEmpty().trim()], async (req, res) => {
         res.json({ error: errors.array() })
     } 
     else {
-    const musician = await Musician.create(req.body)
-    const musicianData = await Musician.findAll();
-    res.json(musicianData)
+        // create one musician and add that musician to the database
+        const musician = await Musician.create(req.body)
+        // get ALL of the musician data
+        const musicianData = await Musician.findAll();
+        // create an http response; send ALL musicians back to the requester
+        res.json(musicianData)
     }
 })
 
