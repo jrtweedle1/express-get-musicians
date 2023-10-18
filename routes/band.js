@@ -5,7 +5,6 @@ const { Band, Musician } = require("../models/index")
 // Getting all bands including their musicians
 router.get("/", async (request, response) => {
     const data = await Band.findAll({ include: Musician });
-    console.log(data)
     response.json(data)
 })
 

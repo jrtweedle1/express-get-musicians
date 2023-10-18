@@ -18,9 +18,12 @@ router.get("/:id", async (req, res) => {
 })
 
 // Adding a musician
-router.post("/", [check("name").not().isEmpty().trim(),
-check("instrument").not().isEmpty().trim()], async (req, res) => {
-    const errors = validationResult(req)
+router.post("/", [
+    check("name").not().isEmpty().trim(),
+    check("instrument").not().isEmpty().trim()
+    ], async (req, res) => {
+    
+        const errors = validationResult(req)
     if (!errors.isEmpty()) {
         res.json({ error: errors.array() })
     } 
