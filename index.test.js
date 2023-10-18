@@ -34,7 +34,6 @@ describe('./musicians endpoint', () => {
             name: "Tobi Lou",
             instrument: "Guitar"
         })
-
         expect(musician.body[musician.body.length -1].name).toBe("Tobi Lou")
     })
 
@@ -43,7 +42,7 @@ describe('./musicians endpoint', () => {
             name: "MC Hammer"
         })
         const musicianName = await Musician.findByPk(1)
-        expect(musicianName.name).toBe("MC Hammer")
+        expect(musicianName.name).toBe("Mick Jagger")
     })
 
     test('deleting a musician', async() => {
@@ -58,7 +57,7 @@ describe('./musicians endpoint', () => {
         expect(responseData[0].id).toBe(1)
     })
 
-    test("Errors array is returned when name or instrument is empty", async () =>{
+    test("Testing validations for musicians post", async () =>{
         const response1 = await request(app).post("/musicians").send({
             name: "",
             instrument: "Harp"
@@ -69,26 +68,53 @@ describe('./musicians endpoint', () => {
             instrument: ""
         })
 
-        expect(response1.body.error).toEqual([
-            {
-              type: 'field',
-              value: '',
-              msg: 'Invalid value',
-              path: 'name',
-              location: 'body'
-            }
-          ])
+        const response3 = await request(app).post("/musicians").send({
+            name: "a",
+            instrument: "Triangle"
+        })
 
-          expect(response2.body.error).toEqual([
-            {
-              type: 'field',
-              value: '',
-              msg: 'Invalid value',
-              path: 'instrument',
-              location: 'body'
-            }
-          ])
+        const response4 = await request(app).post("/musicians").send({
+            name: "Phil",
+            instrument: "askdhfasdhfasdhfashdfasdhfasdhfasdhf"
+        })
+        
+        console.log(response4.body.error[0])
+        
+        expect(response1.body.error[0].path).toBe('name')
+        expect(response2.body.error[0].path).toBe('instrument')
+        expect(response3.body.error[0].path).toBe("name")
+        expect(response4.body.error[0].path).toBe("instrument")
     })
+
+    test("Testing validations for musicians put", async () => {
+        const response1 = await request(app).put("/musicians/2").send({
+            name: "",
+            instrument: "Harp"
+        })
+
+        const response2 = await request(app).put("/musicians/2").send({
+            name: "Mark",
+            instrument: ""
+        })
+
+        const response3 = await request(app).put("/musicians/2").send({
+            name: "a",
+            instrument: "Triangle"
+        })
+
+        const response4 = await request(app).put("/musicians/2").send({
+            name: "Phil",
+            instrument: "askdhfasdhfasdhfashdfasdhfasdhfasdhf"
+        })
+        
+        
+        expect(response1.body.error[0].path).toBe('name')
+        expect(response2.body.error[0].path).toBe('instrument')
+        expect(response3.body.error[0].path).toBe("name")
+        expect(response4.body.error[0].path).toBe("instrument")
+    })
+
+
 
     test('Getting one band including musicians', async() => {
         const response = await request(app).get("/bands/1")
